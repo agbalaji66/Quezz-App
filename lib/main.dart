@@ -40,10 +40,13 @@ class _QuizPageState extends State<QuizPage> {
     final data = Value(percentage: percentage);
     print('Score:$percentage');
     //Ends(data: data);
-    if (scoreKeeper.length > 13) {
+    if (qBrain.isFinished() == true) {
+      scoreKeeper.clear();
+      qBrain.reset();
+      score = 0;
       Alert(
         context: context,
-        type: AlertType.error,
+        type: AlertType.success,
         title: "Test Completed",
         desc: "Thank you for attending the test.",
         buttons: [
@@ -62,30 +65,31 @@ class _QuizPageState extends State<QuizPage> {
           )
         ],
       ).show();
+    } else {
+      //bool correct = Brain.getAnswer();
+      setState(() {
+        if (qBrain.getAnswer() == userAnswer) {
+          score++;
+          print(score);
+          scoreKeeper.add(
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+        } else {
+          scoreKeeper.add(
+            Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          );
+        }
+        // print(score);
+        // print(qBrain.getAnswer());
+        qBrain.nextQuestion(score);
+      });
     }
-    //bool correct = Brain.getAnswer();
-    setState(() {
-      if (qBrain.getAnswer() == userAnswer) {
-        score++;
-        print(score);
-        scoreKeeper.add(
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        );
-      } else {
-        scoreKeeper.add(
-          Icon(
-            Icons.close,
-            color: Colors.red,
-          ),
-        );
-      }
-      // print(score);
-      // print(qBrain.getAnswer());
-      qBrain.nextQuestion(score);
-    });
   }
 
   @override

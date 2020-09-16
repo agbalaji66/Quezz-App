@@ -55,4 +55,16 @@ class Brain {
   bool getAnswer() {
     return _q1[_questionNum].answer;
   }
+
+  void reset() {
+    _questionNum = 0;
+  }
+
+  bool isFinished() {
+    if (_questionNum == _q1.length - 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
